@@ -863,6 +863,8 @@ public:
                 item("solaris");
                 item("bsd");
             }
+            else if (target.os == Target.OS.Haiku)
+                item("haiku");
         }
         arrayEnd();
 

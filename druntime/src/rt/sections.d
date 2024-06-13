@@ -49,6 +49,15 @@ else version (Darwin)
     else
         static assert(0, "unimplemented");
 }
+else version (Haiku)
+{
+    /**
+     * Haiku is missing support needed for elf_shared.
+     * See the top of sections_solaris.d for more info.
+     */
+
+    public import rt.sections_solaris;
+}
 else version (CRuntime_Microsoft)
     public import rt.sections_win64;
 else version (CRuntime_Bionic)

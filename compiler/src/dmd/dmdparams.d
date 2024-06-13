@@ -224,6 +224,8 @@ struct Triple
             os =  Target.OS.FreeBSD;
         else if (matches("openbsd"))
             os =  Target.OS.OpenBSD;
+        else if (matches("haiku"))
+            os =  Target.OS.Haiku;
         else if (matches("linux"))
             os =  Target.OS.linux;
         else if (matches("windows"))

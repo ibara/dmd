@@ -68,6 +68,8 @@ else version (DragonFlyBSD)
     import _execinfo = core.sys.dragonflybsd.execinfo;
 else version (Solaris)
     import _execinfo = core.sys.solaris.execinfo;
+else version (Haiku)
+    import _execinfo = core.sys.haiku.execinfo;
 
 /// Indicates the availability of backtrace functions
 enum bool hasExecinfo = is(_execinfo == module);
@@ -96,6 +98,8 @@ private
     else version (NetBSD)
         enum _BTFmt_BSD = true;
     else version (OpenBSD)
+        enum _BTFmt_BSD = true;
+    else version (Haiku)
         enum _BTFmt_BSD = true;
     else version (ExtExecinfo_BSDFmt)
         enum _BTFmt_BSD = true;

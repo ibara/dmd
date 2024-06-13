@@ -1003,6 +1003,8 @@ nothrow:
                     enum PATH_MAX = 1024;
                 else version (Solaris)
                     enum PATH_MAX = 1024;
+                else version (Haiku)
+                    enum PATH_MAX = 1024;
             }
 
             // Have realpath(), passing a NULL destination pointer may return an

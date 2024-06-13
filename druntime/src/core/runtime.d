@@ -838,6 +838,7 @@ else static if (hasExecinfo) private class DefaultTraceInfo : Throwable.TraceInf
         else version (DragonFlyBSD) enum enableDwarf = true;
         else version (OpenBSD) enum enableDwarf = true;
         else version (Darwin) enum enableDwarf = true;
+        else version (Haiku) enum enableDwarf = true;
         else enum enableDwarf = false;
 
         const framelist = backtrace_symbols( callstack.ptr, numframes );

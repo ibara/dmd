@@ -43,6 +43,7 @@ enum TARGET_FREEBSD = xversion!`FreeBSD`;
 enum TARGET_OPENBSD = xversion!`OpenBSD`;
 enum TARGET_SOLARIS = xversion!`Solaris`;
 enum TARGET_WINDOS  = xversion!`Windows`;
+enum TARGET_HAIKU   = xversion!`Haiku`;
 enum TARGET_DRAGONFLYBSD  = xversion!`DragonFlyBSD`;
 
 //
@@ -139,7 +140,7 @@ enum
 {
     CHARSIZE       = 1,
     SHORTSIZE      = 2,
-    WCHARSIZE      = 2,       // 2 for WIN32, 4 for linux/OSX/FreeBSD/OpenBSD/DragonFlyBSD/Solaris
+    WCHARSIZE      = 2,       // 2 for WIN32, 4 for linux/OSX/FreeBSD/OpenBSD/DragonFlyBSD/Solaris/Haiku
     LONGSIZE       = 4,
     LLONGSIZE      = 8,
     CENTSIZE       = 16,
@@ -303,6 +304,8 @@ enum
     EX_OPENBSD      = 0x400000,
     EX_OPENBSD64    = 0x800000,
     EX_DRAGONFLYBSD64 = 0x1000000,
+    EX_HAIKU        = 0x2000000,
+    EX_HAIKU64      = 0x4000000,
 }
 
 // All of them
@@ -327,7 +330,9 @@ enum exefmt_t EX_all =
     EX_SOLARIS64 |
     EX_OPENBSD   |
     EX_OPENBSD64 |
-    EX_DRAGONFLYBSD64;
+    EX_DRAGONFLYBSD64 |
+    EX_HAIKU     |
+    EX_HAIKU64;
 
 // All segmented memory models
 enum exefmt_t EX_segmented = EX_DOSX | EX_ZPM | EX_RATIONAL | EX_PHARLAP |
@@ -349,7 +354,8 @@ enum exefmt_t EX_posix = EX_LINUX   | EX_LINUX64   |
                          EX_FREEBSD | EX_FREEBSD64 |
                          EX_SOLARIS | EX_SOLARIS64 |
                          EX_OPENBSD | EX_OPENBSD64 |
-                         EX_DRAGONFLYBSD64;
+                         EX_DRAGONFLYBSD64 |
+                         EX_HAIKU   | EX_HAIKU64;
 
 // All 16 bit targets
 enum exefmt_t EX_16 = EX_ZPM | EX_RATIONAL | EX_COM | EX_OS1 | EX_MZ;
@@ -361,7 +367,8 @@ enum exefmt_t EX_32 = EX_DOSX | EX_OS2 | EX_PHARLAP |
                 EX_OSX     |
                 EX_FREEBSD |
                 EX_SOLARIS |
-                EX_OPENBSD;
+                EX_OPENBSD |
+                EX_HAIKU;
 
 // All 64 bit targets
 enum exefmt_t EX_64 =
@@ -371,7 +378,8 @@ enum exefmt_t EX_64 =
                 EX_FREEBSD64 |
                 EX_SOLARIS64 |
                 EX_OPENBSD64 |
-                EX_DRAGONFLYBSD64;
+                EX_DRAGONFLYBSD64 |
+                EX_HAIKU64;
 
 // Constraints
 static assert(EX_all == (EX_segmented ^ EX_flat));

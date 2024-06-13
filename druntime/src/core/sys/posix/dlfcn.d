@@ -370,6 +370,27 @@ else version (Solaris)
         void*        dli_saddr;
     }
 }
+else version (Haiku)
+{
+    enum RTLD_LAZY      = 0;
+    enum RTLD_NOW       = 1;
+    enum RTLD_GLOBAL    = 2;
+    enum RTLD_LOCAL     = 0;
+
+    int   dlclose(void*);
+    char* dlerror();
+    void* dlopen(const scope char*, int);
+    void* dlsym(void*, const scope char*);
+    int   dladdr(const(void)*, Dl_info*);
+
+    struct Dl_info
+    {
+        const(char)* dli_fname;
+        void*        dli_fbase;
+        const(char)* dli_sname;
+        void*        dli_saddr;
+    }
+}
 else version (CRuntime_Bionic)
 {
     enum RTLD_LOCAL    = 0;

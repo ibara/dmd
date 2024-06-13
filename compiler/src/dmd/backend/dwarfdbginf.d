@@ -111,7 +111,7 @@ static if (1)
     {
         if (funcsym_p.Sfunc.Fflags3 & Feh_none)
         {
-            return (config.exe & (EX_FREEBSD | EX_FREEBSD64 | EX_OPENBSD | EX_OPENBSD64 | EX_DRAGONFLYBSD64)) != 0;
+            return (config.exe & (EX_FREEBSD | EX_FREEBSD64 | EX_OPENBSD | EX_OPENBSD64 | EX_DRAGONFLYBSD64 | EX_HAIKU | EX_HAIKU64)) != 0;
         }
 
         /* FreeBSD fails when having some frames as having unwinding info and some not.
@@ -120,7 +120,7 @@ static if (1)
          */
         assert(!(cgstate.usednteh & ~(EHtry | EHcleanup)));
         return (cgstate.usednteh & (EHtry | EHcleanup)) ||
-               (config.exe & (EX_FREEBSD | EX_FREEBSD64 | EX_OPENBSD | EX_OPENBSD64 | EX_DRAGONFLYBSD64)) && config.useExceptions;
+               (config.exe & (EX_FREEBSD | EX_FREEBSD64 | EX_OPENBSD | EX_OPENBSD64 | EX_DRAGONFLYBSD64 | EX_HAIKU | EX_HAIKU64)) && config.useExceptions;
     }
 
         SYMIDX MAP_SEG2SYMIDX(int seg) { return SegData[seg].SDsymidx; }

@@ -50,6 +50,11 @@ else version (Solaris)
     import core.sys.solaris.link;
     version = LinuxOrBSD;
 }
+else version (Haiku)
+{
+    import core.sys.haiku.sys.link_elf;
+    version = LinuxOrBSD;
+}
 
 /**
  * File-based memory-mapped I/O (read-only).
@@ -404,6 +409,20 @@ char* thisExePath()
         // there's apparently no proper way :/
         import core.stdc.string : strdup;
         return strdup(getprogname());
+    }
+    else version (Haiku)
+    {
+        import core.sys.haiku.image : _get_next_image_info, image_info, B_APP_IMAGE;
+
+        image_info info;
+        int cookie = 0;
+        size_t size = long.sizeof; // (image_info*).sizeof?
+
+        while (_get_next_image_info(0, &cookie, &info, size) == 0)
+        {
+            if (info.type == B_APP_IMAGE)
+                return info.name;
+        }
     }
     else
     {

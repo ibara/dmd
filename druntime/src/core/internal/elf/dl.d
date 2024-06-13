@@ -41,6 +41,11 @@ else version (Solaris)
     import core.sys.solaris.link;
     version = LinuxOrBSD;
 }
+else version (Haiku)
+{
+    import core.sys.haiku.sys.link_elf;
+    version = LinuxOrBSD;
+}
 
 version (LinuxOrBSD):
 
@@ -93,6 +98,7 @@ struct SharedObject
         else version (NetBSD)  enum IterateManually = true;
         else version (OpenBSD) enum IterateManually = true;
         else version (Solaris) enum IterateManually = true;
+        else version (Haiku)   enum IterateManually = true;
         else                   enum IterateManually = false;
 
         static if (IterateManually)

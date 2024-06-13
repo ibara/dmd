@@ -36,6 +36,11 @@ else version (Solaris)
     import core.sys.solaris.sys.elf;
     version = LinuxOrBSD;
 }
+else version (Haiku)
+{
+    import core.sys.haiku.sys.elf;
+    version = LinuxOrBSD;
+}
 
 version (LinuxOrBSD):
 

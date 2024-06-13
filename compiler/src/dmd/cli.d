@@ -31,10 +31,11 @@ enum TargetOS : ubyte
     FreeBSD      = 0x10,
     Solaris      = 0x20,
     DragonFlyBSD = 0x40,
+    Haiku        = 0x80,
 
     // Combination masks
-    all = linux | Windows | OSX | OpenBSD | FreeBSD | Solaris | DragonFlyBSD,
-    Posix = linux | OSX | OpenBSD | FreeBSD | Solaris | DragonFlyBSD,
+    all = linux | Windows | OSX | OpenBSD | FreeBSD | Solaris | DragonFlyBSD | Haiku,
+    Posix = linux | OSX | OpenBSD | FreeBSD | Solaris | DragonFlyBSD | Haiku,
 }
 
 // Detect the current TargetOS
@@ -65,6 +66,10 @@ else version(DragonFlyBSD)
 else version(Solaris)
 {
     private enum targetOS = TargetOS.Solaris;
+}
+else version(Haiku)
+{
+    private enum targetOS = TargetOS.Haiku;
 }
 else
 {
@@ -680,6 +685,7 @@ dmd -cov -unittest myprog.d
                     $(LI $(I openbsd): OpenBSD)
                     $(LI $(I osx): OSX)
                     $(LI $(I solaris): Solaris)
+                    $(LI $(I haiku): Haiku)
                     $(LI $(I windows): Windows)
                 )`
         ),

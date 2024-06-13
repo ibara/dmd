@@ -51,6 +51,7 @@ void backend_init(const ref Param params, const ref DMDparams driverParams, cons
         case Target.OS.FreeBSD: exfmt = target.isX86_64 ? EX_FREEBSD64 : EX_FREEBSD; break;
         case Target.OS.OpenBSD: exfmt = target.isX86_64 ? EX_OPENBSD64 : EX_OPENBSD; break;
         case Target.OS.Solaris: exfmt = target.isX86_64 ? EX_SOLARIS64 : EX_SOLARIS; break;
+        case Target.OS.Haiku: exfmt = target.isX86_64 ? EX_HAIKU64 : EX_HAIKU; break;
         case Target.OS.DragonFlyBSD: exfmt = EX_DRAGONFLYBSD64; break;
         default: assert(0);
     }

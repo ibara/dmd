@@ -240,6 +240,8 @@ else version (DigitalMars)
             alias real c_long_double;
         else version (Darwin)
             alias real c_long_double;
+        else version (Haiku)
+            alias real c_long_double;
     }
 }
 

@@ -106,6 +106,24 @@ else version (Solaris)
     ///
     alias mbstate_t = __mbstate_t;
 }
+version (Haiku)
+{
+    ///
+    struct mbstate_t
+    {
+        void* converter;
+        char[64] charset;
+        uint count;
+        char[1024 + 8] data;
+        int __count;
+        union ___value
+        {
+            wint_t __wch = 0;
+            char[4] __wchb;
+        }
+        ___value __value;
+    }
+}
 else version (CRuntime_Newlib)
 {
     ///

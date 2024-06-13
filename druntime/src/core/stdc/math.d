@@ -97,6 +97,13 @@ else version (Solaris)
     ///
     enum int FP_ILOGBNAN      = int.max;
 }
+else version (Haiku)
+{
+    ///
+    enum int FP_ILOGB0        = -int.max;
+    ///
+    enum int FP_ILOGBNAN      = int.max;
+}
 else version (CRuntime_Bionic)
 {
     ///
@@ -1414,6 +1421,96 @@ else version (Solaris)
             static assert(false, "Architecture not supported.");
     }
   }
+}
+else version (Haiku)
+{
+    enum
+    {
+        ///
+        FP_INFINITE  = 0x01,
+        ///
+        FP_NAN       = 0x02,
+        ///
+        FP_NORMAL    = 0x04,
+        ///
+        FP_SUBNORMAL = 0x08,
+        ///
+        FP_ZERO      = 0x10,
+    }
+
+    enum
+    {
+        ///
+        FP_FAST_FMA  = 0,
+        ///
+        FP_FAST_FMAF = 0,
+        ///
+        FP_FAST_FMAL = 0,
+    }
+
+    pure int __fpclassifyd(double);
+    pure int __fpclassifyf(float);
+    pure int __fpclassifyl(real);
+    pure int __isfinitef(float);
+    pure int __isfinite(double);
+    pure int __isfinitel(real);
+    pure int __isinff(float);
+    pure int __isinfl(real);
+    pure int __isnanl(real);
+    pure int __isnormalf(float);
+    pure int __isnormal(double);
+    pure int __isnormall(real);
+    pure int __signbit(double);
+    pure int __signbitf(float);
+    pure int __signbitl(real);
+
+    //int fpclassify(real-floating x);
+      ///
+    pragma(mangle, "__fpclassifyf") pure int fpclassify(float x);
+    ///
+    pragma(mangle, "__fpclassifyd") pure int fpclassify(double x);
+    ///
+    pragma(mangle, "__fpclassifyl") pure int fpclassify(real x);
+
+    //int isfinite(real-floating x);
+    ///
+    pragma(mangle, "__isfinitef") pure int isfinite(float x);
+    ///
+    pragma(mangle, "__isfinite")  pure int isfinite(double x);
+    ///
+    pragma(mangle, "__isfinitel") pure int isfinite(real x);
+
+    //int isinf(real-floating x);
+    ///
+    pragma(mangle, "__isinff") pure int isinf(float x);
+    ///
+    extern (D) pure int isinf(double x)         { return __isinfl(x); }
+    ///
+    pragma(mangle, "__isinfl") pure int isinf(real x);
+
+    //int isnan(real-floating x);
+    ///
+    extern (D) pure int isnan(float x)          { return __isnanl(x); }
+    ///
+    extern (D) pure int isnan(double x)         { return __isnanl(x); }
+    ///
+    pragma(mangle, "__isnanl") pure int isnan(real x);
+
+    //int isnormal(real-floating x);
+    ///
+    pragma(mangle, "__isnormalf") pure int isnormal(float x);
+    ///
+    pragma(mangle, "__isnormal")  pure int isnormal(double x);
+    ///
+    pragma(mangle, "__isnormall") pure int isnormal(real x);
+
+    //int signbit(real-floating x);
+    ///
+    pragma(mangle, "__signbitf") pure int signbit(float x);
+    ///
+    pragma(mangle, "__signbit")  pure int signbit(double x);
+    ///
+    extern (D) pure int signbit(real x)         { return __signbit(x); }
 }
 else version (CRuntime_Bionic)
 {
@@ -3462,6 +3559,407 @@ else version (DragonFlyBSD)
     pure real fminl(real x, real y);
 
     pure real fmal(real x, real, real);
+}
+else version (Haiku)
+{
+    ///
+    double  acos(double x);
+    ///
+    float   acosf(float x);
+    ///
+    real    acosl(real x); // since 8.0
+
+    ///
+    double  asin(double x);
+    ///
+    float   asinf(float x);
+    ///
+    real    asinl(real x); // since 8.0
+
+    ///
+    pure double  atan(double x);
+    ///
+    pure float   atanf(float x);
+    ///
+    pure real    atanl(real x); // since 8.0
+
+    ///
+    double  atan2(double y, double x);
+    ///
+    float   atan2f(float y, float x);
+    ///
+    real    atan2l(real y, real x); // since 8.0
+
+    ///
+    pure double  cos(double x);
+    ///
+    pure float   cosf(float x);
+    ///
+    pure real    cosl(real x); // since 8.0
+
+    ///
+    pure double  sin(double x);
+    ///
+    pure float   sinf(float x);
+    ///
+    pure real    sinl(real x); // since 8.0
+
+    ///
+    pure double  tan(double x);
+    ///
+    pure float   tanf(float x);
+    ///
+    pure real    tanl(real x); // since 8.0
+
+    ///
+    double  acosh(double x);
+    ///
+    float   acoshf(float x);
+    ///
+    real    acoshl(real x); // since 10.0
+
+    ///
+    pure double  asinh(double x);
+    ///
+    pure float   asinhf(float x);
+    ///
+    pure real    asinhl(real x); // since 10.0
+
+    ///
+    double  atanh(double x);
+    ///
+    float   atanhf(float x);
+    ///
+    real    atanhl(real x); // since 10.0
+
+    ///
+    double  cosh(double x);
+    ///
+    float   coshf(float x);
+    ///
+    real    coshl(real x); // since 10.1
+
+    ///
+    double  sinh(double x);
+    ///
+    float   sinhf(float x);
+    ///
+    real    sinhl(real x); // since 10.1
+
+    ///
+    pure double  tanh(double x);
+    ///
+    pure float   tanhf(float x);
+    ///
+    pure real    tanhl(real x); // since 10.1
+
+    ///
+    double  exp(double x);
+    ///
+    float   expf(float x);
+    ///
+    real    expl(real x); // since 10.0
+
+    ///
+    double  exp2(double x);
+    ///
+    float   exp2f(float x);
+    ///
+    real    exp2l(real x); // since 8.0
+
+    ///
+    double  expm1(double x);
+    ///
+    float   expm1f(float x);
+    ///
+    real    expm1l(real x); // since 10.0
+
+    ///
+    pure double  frexp(double value, int* exp);
+    ///
+    pure float   frexpf(float value, int* exp);
+    ///
+    pure real    frexpl(real value, int* exp); // since 6.0
+
+    ///
+    int     ilogb(double x);
+    ///
+    int     ilogbf(float x);
+    ///
+    int     ilogbl(real x); // since 5.4
+
+    ///
+    double  ldexp(double x, int exp);
+    ///
+    float   ldexpf(float x, int exp);
+    ///
+    real    ldexpl(real x, int exp); // since 6.0
+
+    ///
+    double  log(double x);
+    ///
+    float   logf(float x);
+    ///
+    real    logl(real x); // since 10.0
+
+    ///
+    double  log10(double x);
+    ///
+    float   log10f(float x);
+    ///
+    real    log10l(real x); // since 10.0
+
+    ///
+    double  log1p(double x);
+    ///
+    float   log1pf(float x);
+    ///
+    real    log1pl(real x); // since 10.0
+
+    ///
+    double log2(double x); // since 8.3
+    ///
+    float  log2f(float x); // since 8.3
+    ///
+    real   log2l(real x); // since 10.0
+
+    ///
+    double  logb(double x);
+    ///
+    float   logbf(float x);
+    ///
+    real    logbl(real x); // since 8.0
+
+    ///
+    pure double  modf(double value, double* iptr);
+    ///
+    pure float   modff(float value, float* iptr);
+    ///
+    pure real    modfl(real value, real *iptr); // since 8.0
+
+    ///
+    double  scalbn(double x, int n);
+    ///
+    float   scalbnf(float x, int n);
+    ///
+    real    scalbnl(real x, int n); // since 6.0
+
+    ///
+    double  scalbln(double x, c_long n);
+    ///
+    float   scalblnf(float x, c_long n);
+    ///
+    real    scalblnl(real x, c_long n); // since 6.0
+
+    ///
+    pure double  cbrt(double x);
+    ///
+    pure float   cbrtf(float x);
+    ///
+    pure real    cbrtl(real x); // since 9.0
+
+    ///
+    pure double  fabs(double x);
+    ///
+    pure float   fabsf(float x);
+    ///
+    pure real    fabsl(real x); // since 5.3
+
+    ///
+    double  hypot(double x, double y);
+    ///
+    float   hypotf(float x, float y);
+    ///
+    real    hypotl(real x, real y); // since 8.0
+
+    ///
+    double  pow(double x, double y);
+    ///
+    float   powf(float x, float y);
+    ///
+    real    powl(real x, real y); // since 10.4
+
+    ///
+    double  sqrt(double x);
+    ///
+    float   sqrtf(float x);
+    ///
+    real    sqrtl(real x); // since 8.0
+
+    ///
+    pure double  erf(double x);
+    ///
+    pure float   erff(float x);
+    ///
+    pure real    erfl(real x); // since 10.1
+
+    ///
+    double  erfc(double x);
+    ///
+    float   erfcf(float x);
+    ///
+    real    erfcl(real x); // since 10.1
+
+    ///
+    double  lgamma(double x);
+    ///
+    float   lgammaf(float x);
+    ///
+    real    lgammal(real x); // since 10.2
+
+    ///
+    double  tgamma(double x);
+    ///
+    float   tgammaf(float x);
+    ///
+    real    tgammal(real x); // since 11.2
+
+    ///
+    pure double  ceil(double x);
+    ///
+    pure float   ceilf(float x);
+    ///
+    pure real    ceill(real x); // since 5.4
+
+    ///
+    pure double  floor(double x);
+    ///
+    pure float   floorf(float x);
+    ///
+    pure real    floorl(real x); // since 5.4
+
+    ///
+    pure double  nearbyint(double x);
+    ///
+    pure float   nearbyintf(float x);
+    ///
+    pure real    nearbyintl(real x); // since 8.0
+
+    ///
+    pure double  rint(double x);
+    ///
+    pure float   rintf(float x);
+    ///
+    pure real    rintl(real x); // since 8.0
+
+    ///
+    c_long  lrint(double x);
+    ///
+    c_long  lrintf(float x);
+    ///
+    c_long  lrintl(real x); // since 8.0
+
+    ///
+    long    llrint(double x);
+    ///
+    long    llrintf(float x);
+    ///
+    long    llrintl(real x); // since 8.0
+
+    ///
+    pure double  round(double x);
+    ///
+    pure float   roundf(float x);
+    ///
+    pure real    roundl(real x); // since 6.0
+
+    ///
+    c_long  lround(double x);
+    ///
+    c_long  lroundf(float x);
+    ///
+    c_long  lroundl(real x); // since 6.0
+
+    ///
+    long    llround(double x);
+    ///
+    long    llroundf(float x);
+    ///
+    long    llroundl(real x); // since 6.0
+
+    ///
+    pure double  trunc(double x);
+    ///
+    pure float   truncf(float x);
+    ///
+    pure real    truncl(real x); // since 6.0
+
+    ///
+    double  fmod(double x, double y);
+    ///
+    float   fmodf(float x, float y);
+    ///
+    real    fmodl(real x, real y); // since 8.0
+
+    ///
+    double  remainder(double x, double y);
+    ///
+    float   remainderf(float x, float y);
+    ///
+    real    remainderl(real x, real y); // since 8.0
+
+    ///
+    double  remquo(double x, double y, int* quo);
+    ///
+    float   remquof(float x, float y, int* quo);
+    ///
+    real    remquol(real x, real y, int* quo); // since 8.0
+
+    ///
+    pure double  copysign(double x, double y);
+    ///
+    pure float   copysignf(float x, float y);
+    ///
+    pure real    copysignl(real x, real y); // since 5.3
+
+    ///
+    pure double  nan(const char*); // since 8.0
+    ///
+    pure float   nanf(const char*); // since 8.0
+    ///
+    pure real    nanl(const char*); // since 8.0
+
+    ///
+    double  nextafter(double x, double y);
+    ///
+    float   nextafterf(float x, float y);
+    ///
+    real    nextafterl(real x, real y); // since 6.0
+
+    ///
+    double  nexttoward(double x, real y);
+    ///
+    float   nexttowardf(float x, real y);
+    ///
+    real    nexttowardl(real x, real y); // since 6.0
+
+    ///
+    double  fdim(double x, double y);
+    ///
+    float   fdimf(float x, float y);
+    ///
+    real    fdiml(real x, real y); // since 5.3
+
+    ///
+    pure double  fmax(double x, double y);
+    ///
+    pure float   fmaxf(float x, float y);
+    ///
+    pure real    fmaxl(real x, real y); // since 5.3
+
+    ///
+    pure double  fmin(double x, double y);
+    ///
+    pure float   fminf(float x, float y);
+    ///
+    pure real    fminl(real x, real y); // since 5.3
+
+    ///
+    pure double  fma(double x, double y, double z);
+    ///
+    pure float   fmaf(float x, float y, float z);
+    ///
+    pure real    fmal(real x, real y, real z); // since 6.0
 }
 else version (CRuntime_Bionic)
 {

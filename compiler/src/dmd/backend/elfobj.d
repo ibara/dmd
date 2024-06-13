@@ -1293,6 +1293,8 @@ void ElfObj_term(const(char)[] objfilename)
         case EX_SOLARIS:
         case EX_SOLARIS64:
         case EX_DRAGONFLYBSD64:
+        case EX_HAIKU:
+        case EX_HAIKU64:
             ELFOSABI = ELFOSABI_SYSV;
             break;
 
@@ -3320,7 +3322,7 @@ private void obj_rtinit()
     // needs to be writeable for PIC code, see Bugzilla 13117
     const shf_flags = SHF_ALLOC | SHF_WRITE;
 
-    if (config.exe & (EX_OPENBSD | EX_OPENBSD64))
+    if (config.exe & (EX_OPENBSD | EX_OPENBSD64 | EX_HAIKU | EX_HAIKU64))
     {
         const namidx3 = ElfObj_addstr(symtab_strings,"__start_deh");
         deh_beg = elf_addsym(namidx3, 0, 0, STT_NOTYPE, STB_GLOBAL, SHN_UNDEF, STV_HIDDEN);
@@ -3515,7 +3517,7 @@ private void obj_rtinit()
             off += 1;
         }
 
-        if (config.exe & (EX_OPENBSD | EX_OPENBSD64))
+        if (config.exe & (EX_OPENBSD | EX_OPENBSD64 | EX_HAIKU | EX_HAIKU64))
         {
             writeSym(deh_end);
             writeSym(deh_beg);

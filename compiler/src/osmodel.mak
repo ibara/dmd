@@ -2,7 +2,7 @@
 #
 # Detects and sets the macros:
 #
-#   OS         = one of {windows,osx,linux,freebsd,openbsd,netbsd,dragonflybsd,solaris}
+#   OS         = one of {windows,osx,linux,freebsd,openbsd,netbsd,dragonflybsd,solaris,haiku}
 #   MODEL      = one of { 32, 64 }
 #   MODEL_FLAG = one of { -m32, -m64 }
 #   ARCH       = one of { x86, x86_64, aarch64 }
@@ -39,6 +39,9 @@ ifeq (,$(OS))
     endif
     ifeq (SunOS,$(uname_S))
       OS:=solaris
+    endif
+    ifeq (Haiku,$(uname_S))
+      OS:=haiku
     endif
     ifeq (,$(OS))
       $(error Unrecognized or unsupported OS for uname: $(uname_S))

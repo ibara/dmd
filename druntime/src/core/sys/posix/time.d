@@ -77,6 +77,10 @@ else version (Solaris)
 {
     time_t timegm(tm*); // non-standard
 }
+else version (Haiku)
+{
+    time_t timegm(tm*); // non-standard
+}
 else version (CRuntime_Bionic)
 {
     // Not supported.
@@ -154,6 +158,10 @@ else version (Darwin)
 else version (Solaris)
 {
     enum CLOCK_MONOTONIC = 4;
+}
+else version (Haiku)
+{
+    enum CLOCK_MONOTONIC = 0;
 }
 else
 {
@@ -253,6 +261,14 @@ else version (Solaris)
     }
 
     alias timespec timestruc_t;
+}
+else version (Haiku)
+{
+    struct timespec
+    {
+        time_t tv_sec;
+        c_long tv_nsec;
+    }
 }
 else
 {
@@ -432,6 +448,37 @@ else version (Solaris)
     int timer_gettime(timer_t, itimerspec*);
     int timer_settime(timer_t, int, const scope itimerspec*, itimerspec*);
 }
+else version (Haiku)
+{
+    alias int clockid_t;
+    alias int timer_t;
+
+    enum CLOCK_PROCESS_CPUTIME_ID = cast(clockid_t)-2;
+    enum CLOCK_THREAD_CPUTIME_ID  = cast(clockid_t)-3;
+
+    struct itimerspec
+    {
+        timespec it_interval;
+        timespec it_value;
+    }
+
+    enum CLOCK_REALTIME = cast(clockid_t)-1;
+    enum TIMER_ABSOLUTE = 0x1;
+    enum TIMER_ABSTIME  = 0x1;
+
+    int clock_getres(clockid_t, timespec*);
+    int clock_gettime(clockid_t, timespec*);
+    int clock_settime(clockid_t, const scope timespec*);
+    int clock_nanosleep(clockid_t, int, const scope timespec*, timespec*);
+
+    int nanosleep(const scope timespec*, timespec*);
+
+    int timer_create(clockid_t, sigevent*, timer_t*);
+    int timer_delete(timer_t);
+    int timer_getoverrun(timer_t);
+    int timer_gettime(timer_t, itimerspec*);
+    int timer_settime(timer_t, int, const scope itimerspec*, itimerspec*);
+}
 else version (CRuntime_Bionic)
 {
     enum CLOCK_PROCESS_CPUTIME_ID = 2;
@@ -593,6 +640,13 @@ else version (Solaris)
     tm* gmtime_r(const scope time_t*, tm*);
     tm* localtime_r(const scope time_t*, tm*);
 }
+else version (Haiku)
+{
+    char* asctime_r(const scope tm*, char*);
+    char* ctime_r(const scope time_t*, char*);
+    tm* gmtime_r(const scope time_t*, tm*);
+    tm* localtime_r(const scope time_t*, tm*);
+}
 else version (CRuntime_Bionic)
 {
     char* asctime_r(const scope tm*, char*);
@@ -679,6 +733,10 @@ else version (Solaris)
     tm* getdate(const scope char*);
     char* __strptime_dontzero(const scope char*, const scope char*, tm*);
     alias __strptime_dontzero strptime;
+}
+else version (Haiku)
+{
+    char* strptime(const scope char*, const scope char*, tm*);
 }
 else version (CRuntime_Bionic)
 {

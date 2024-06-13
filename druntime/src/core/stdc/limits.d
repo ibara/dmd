@@ -168,6 +168,19 @@ else version (Solaris)
     ///
     enum PIPE_BUF       = 5120;
 }
+else version (Haiku)
+{
+    ///
+    enum MAX_CANON      = 255;
+    ///
+    enum MAX_INPUT      = 255;
+    ///
+    enum NAME_MAX       = 256;
+    ///
+    enum PATH_MAX       = 1024;
+    ///
+    enum PIPE_BUF       = 4096;
+}
 else version (Windows)
 {
     ///

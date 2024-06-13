@@ -46,6 +46,10 @@ private
   {
     import core.sys.posix.sys.types;
   }
+  version (Haiku)
+  {
+    import core.sys.posix.sys.types;
+  }
 }
 
 extern (C):
@@ -276,6 +280,24 @@ else version (Solaris)
     else
         ///
         enum int _NFILE = 20;
+}
+else version (Haiku)
+{
+    enum
+    {
+        ///
+        BUFSIZ       = 8192,
+        ///
+        EOF          = -1,
+        ///
+        FOPEN_MAX    = 128,
+        ///
+        FILENAME_MAX = 256,
+        ///
+        TMP_MAX      = 32768,
+        ///
+        L_tmpnam     = 512
+    }
 }
 else version (CRuntime_Bionic)
 {
@@ -705,6 +727,55 @@ else version (Solaris)
     ///
     alias shared(_iobuf) FILE;
 }
+else version (Haiku)
+{
+    import core.stdc.wchar_ : mbstate_t;
+    ///
+    struct fpos_t
+    {
+        long __pos; // couldn't use off_t because of static if issue
+        mbstate_t __state;
+    }
+
+    ///
+    struct _IO_FILE
+    {
+        int     _flags;
+        char*   _read_ptr;
+        char*   _read_end;
+        char*   _read_base;
+        char*   _write_base;
+        char*   _write_ptr;
+        char*   _write_end;
+        char*   _buf_base;
+        char*   _buf_end;
+        char*   _save_base;
+        char*   _backup_base;
+        char*   _save_end;
+        void*   _markers;
+        _IO_FILE* _chain;
+        int     _fileno;
+        int     _flags2;
+        ptrdiff_t _old_offset;
+        ushort  _cur_column;
+        byte    _vtable_offset;
+        char[1] _shortbuf = 0;
+        void*   _lock;
+
+        ptrdiff_t _offset;
+
+        /*_IO_codecvt*/ void* _codecvt;
+        /*_IO_wide_data*/ void* _wide_data;
+        int _mode;
+
+        char[15 * int.sizeof - 2 * (void*).sizeof] _unused2;
+    }
+
+    ///
+    alias _IO_FILE _iobuf;
+    ///
+    alias shared(_IO_FILE) FILE;
+}
 else version (CRuntime_Bionic)
 {
     ///
@@ -1079,6 +1150,25 @@ else version (Solaris)
     @property auto stdout()() { return &__iob[1]; }
     ///
     @property auto stderr()() { return &__iob[2]; }
+}
+else version (Haiku)
+{
+    enum
+    {
+        ///
+        _IOFBF = 0,
+        ///
+        _IOLBF = 1,
+        ///
+        _IONBF = 2,
+    }
+
+    ///
+    extern shared FILE* stdin;
+    ///
+    extern shared FILE* stdout;
+    ///
+    extern shared FILE* stderr;
 }
 else version (CRuntime_Bionic)
 {
@@ -1789,6 +1879,47 @@ else version (Solaris)
     ///
     pragma(printf)
     int  vsnprintf(scope char* s, size_t n, scope const char* format, va_list arg);
+}
+else version (Haiku)
+{
+  // No unsafe pointer manipulation.
+  @trusted
+  {
+    ///
+    void rewind(FILE* stream);
+    ///
+    pure void clearerr(FILE* stream);
+    ///
+    pure int  feof(FILE* stream);
+    ///
+    pure int  ferror(FILE* stream);
+    ///
+    int  fileno(FILE *);
+  }
+
+    ///
+    pragma(printf)
+    int  snprintf(scope char* s, size_t n, scope const char* format, scope const ...);
+    ///
+    pragma(printf)
+    int  vsnprintf(scope char* s, size_t n, scope const char* format, va_list arg);
+
+    //
+    // Gnu under-the-hood C I/O functions. Uses _iobuf* for the unshared
+    // version of FILE*, usable when the FILE is locked.
+    // See http://gnu.org/software/libc/manual/html_node/I_002fO-on-Streams.html
+    //
+    import core.stdc.wchar_ : wint_t;
+    import core.stdc.stddef : wchar_t;
+
+    ///
+    int fputc_unlocked(int c, _iobuf* stream);
+    ///
+    int fgetc_unlocked(_iobuf* stream);
+    ///
+    wint_t fputwc_unlocked(wchar_t wc, _iobuf* stream);
+    ///
+    wint_t fgetwc_unlocked(_iobuf* stream);
 }
 else version (CRuntime_Bionic)
 {

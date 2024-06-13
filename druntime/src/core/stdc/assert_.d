@@ -79,6 +79,15 @@ else version (DragonFlyBSD)
      */
     noreturn __assert(const(char)* func, const(char)* file, uint line, const(char)* exp);
 }
+else version (Haiku)
+{
+    /***
+     * Assert failure function in the Haiku library.
+     */
+    noreturn __assert_fail(const(char)* assertion, const(char)* file, uint line, const(char)* func);
+    ///
+    noreturn __assert_perror_fail(int error, const(char)* file, uint line, const(char)* func);
+}
 else version (CRuntime_Glibc)
 {
     /***
